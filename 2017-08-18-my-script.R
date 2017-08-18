@@ -184,20 +184,59 @@ surveys %>%
 ## max hindfoot length for each species (using species_id).
 
 surveys %>%
+  select(hindfoot_length, species_id) %>%
   filter(!is.na(hindfoot_length)) %>%
   group_by(species_id) %>%
-  summarize (min_hindfoot_length = min(hindfoot_length, na.rm = TRUE), 
-             mean_hindfoot_length = mean(hindfoot_length, na.rm = TRUE), 
-             max_hindfoot_length = max(hindfoot_length, na.rm = TRUE))
+  summarize (min_hindfoot_length = min(hindfoot_length), 
+             mean_hindfoot_length = mean(hindfoot_length), 
+             max_hindfoot_length = max(hindfoot_length))
 
 ## 3. What was the heaviest animal measured in each year? Return
 ## the columns year, genus, species_id, and weight. Hint: it does not include summarize
 
+surveys %>%
+  filter(!is.na(weight)) %>%
+  select(year, genus, species_id, weight) %>%
+  group_by(year) %>%
+  top_n(1, weight) %>%
+  arrange(year)
+  
 ## 4. You saw above how to count the number of individuals of each sex using a
 ## combination of group_by() and tally(). How could you get the same result using
 ## group_by() and summarize()? Hint: see ?n.
 
+surveys %>%
+  group_by(sex) %>%
+  summarize(n())
 
 
+## exporting data ----
+surveys_complete <- surveys %>%
+  filter(species_id != "") %>>% #remove missing species_id
+  filter(!is.na(weight)) %>%
+  filter(!is.na(hindfoot_length)) %>%
+  filter(sex != "")
+
+#OR
+surveys_complete <- surveys %>%
+  filter(species_id != "",
+         !is.na (weight),
+         !is.na(hindfoot_length),
+         sex !="")
+
+# extract the most common species_id
+
+species_counts <- surveys_complete %>%
+  group_by(species_id) %>%
+  tally %>%
+  filter(n >= 50)
+
+# only keep most common species
+
+surveys_comm_sp <- surveys_complete %>%
+  filter(species_id %in% species_counts$species_id)
   
+#save data
+
+write.csv(surveys_comm_sp, file = "data_output/surveys_complete.csv")
 
