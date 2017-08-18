@@ -156,8 +156,48 @@ surveys %>%
 surveys %>%
   filter(!is.na(weight),
          sex == "F" | sex == "M") %>%
-  group_by(sex, species_id) %>%
+  group_by(species_id, sex) %>%
   summarise(mean_weight = mean(weight))
+
+surveys %>%
+  filter(sex == "F" | sex == "M") %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight, na.rm = T),
+  min_weight = min(weight, na.rm = T))
+
+## tally counts the total count of how many males and females in dataset
+surveys %>%
+  group_by(sex) %>%
+  tally(record_id)
+
+## More Challenges ----
+
+## Challenge
+
+## 1. How many individuals were caught in each plot_type surveyed?
+surveys %>%
+  group_by(plot_type) %>%
+  tally
+
+
+## 2. Use group_by() and summarize() to find the mean, min, and 
+## max hindfoot length for each species (using species_id).
+
+surveys %>%
+  filter(!is.na(hindfoot_length)) %>%
+  group_by(species_id) %>%
+  summarize (min_hindfoot_length = min(hindfoot_length, na.rm = TRUE), 
+             mean_hindfoot_length = mean(hindfoot_length, na.rm = TRUE), 
+             max_hindfoot_length = max(hindfoot_length, na.rm = TRUE))
+
+## 3. What was the heaviest animal measured in each year? Return
+## the columns year, genus, species_id, and weight. Hint: it does not include summarize
+
+## 4. You saw above how to count the number of individuals of each sex using a
+## combination of group_by() and tally(). How could you get the same result using
+## group_by() and summarize()? Hint: see ?n.
+
+
 
   
 
