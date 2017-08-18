@@ -21,4 +21,4 @@ This repository demonstrates **software** and _formats_:
 
 ## Conclusion
 
-![](https://octodex.github.com/images/labtocat.png
+![](my_plot.png)
