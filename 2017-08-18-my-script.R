@@ -85,3 +85,29 @@ length(which(surveys$month == 1 | surveys$month == 2 ))
 ## Day 2 of Workshop ----
 ## Practice pushing content to github
 ## Write code, save, then commit, pull, push!
+
+surveys <- read.csv("data/portal_data_joined.csv")
+
+install.packages("tidyverse")
+library(tidyverse)
+
+## select the columns plot_id, species_id, and weight
+## surveys dataframe
+select(surveys, plot_id, species_id, weight)
+
+## using filter select rows where year is 1995
+filter(surveys, year == 1995)
+
+## want rows where year is 1995 and the columns where plot_id, species_id, and weight
+
+## PIPES! ----
+
+## THIS IS A PIPE    %>%
+
+surveys %>%
+  filter(year == 1995) %>%
+  select(plot_id, species_id, weight)
+
+surveys_sml <- surveys %>%
+  filter(year == 1995) %>%
+  select(plot_id, species_id, weight)
