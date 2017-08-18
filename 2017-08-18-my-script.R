@@ -81,3 +81,7 @@ length(which(surveys$month <3))
 length(which(surveys$month == 1 | surveys$month == 2 ))
 
 ## answer is 5213
+
+## Day 2 of Workshop ----
+## Practice pushing content to github
+## Write code, save, then commit, pull, push!
