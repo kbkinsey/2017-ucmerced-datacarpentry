@@ -111,3 +111,53 @@ surveys %>%
 surveys_sml <- surveys %>%
   filter(year == 1995) %>%
   select(plot_id, species_id, weight)
+
+surveys_sml
+
+## create two new columns
+surveys %>%
+  mutate(weight_kg = weight / 1000,
+         weight_kg2 = weight_kg * 2)
+
+## remove rows with NAs in it
+surveys %>%
+  filter(!is.na(weight)) %>%
+  mutate(weight_kg = weight / 1000,
+         weight_kg2 = weight_kg * 2) %>%
+  head
+
+## Day 2 Challenge! ---- 
+## Create a new data frame from the surveys data that
+## meets the following criteria: contains only the species_id column and a new
+## column called hindfoot_half containing values that are half the
+## hindfoot_lengthvalues. In this hindfoot_half column, there are no NAs and all
+## values are less than 30.
+
+surveys %>%
+  mutate(hindfoot_half = hindfoot_length / 2) %>%
+  filter(!is.na(hindfoot_half)) %>%
+  filter(hindfoot_half < 30) %>%
+  select(species_id, hindfoot_half)
+
+
+surveys %>%
+  mutate(hindfoot_half = hindfoot_length / 2) %>%
+  select(species_id, hindfoot_half) %>%
+  filter(!is.na(hindfoot_half), hindfoot_half < 30)
+
+## group by and summarize
+
+surveys %>%
+  group_by(sex) %>%
+  summarise(mean_weight = mean(weight, na.rm = T))
+
+## also want it to group on species id
+
+surveys %>%
+  filter(!is.na(weight),
+         sex == "F" | sex == "M") %>%
+  group_by(sex, species_id) %>%
+  summarise(mean_weight = mean(weight))
+
+  
+
